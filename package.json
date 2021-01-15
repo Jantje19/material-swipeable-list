@@ -1,6 +1,6 @@
 {
   "name": "material-swipeable-list",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Swipeable Material-UI list component for React",
   "author": "Jantje19",
   "license": "MIT",
@@ -49,5 +49,8 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "@material-ui/core": "^4.11.2"
+  }
 }

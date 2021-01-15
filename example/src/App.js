@@ -1,10 +1,26 @@
-import React from 'react'
+import { ListItem, ListItemText } from '@material-ui/core';
+import React, { useState } from 'react';
 
-import { ExampleComponent } from 'material-swipeable-list'
-import 'material-swipeable-list/dist/index.css'
+import SwipeableList from 'material-swipeable-list';
 
 const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
+  const [items, setItems] = useState(['Material', 'React', 'Swipeable', 'Awesome']);
+
+  const handleChange = (index) => setItems((prevItems) => {
+    const itemsCopy = prevItems.slice();
+
+    itemsCopy.splice(index, 1);
+
+    return itemsCopy;
+  });
+
+  const generateListItem = (item) => (
+    <ListItem button>
+      <ListItemText primary={item} />
+    </ListItem>
+  );
+
+  return <SwipeableList items={items} onChange={handleChange} generateListItem={generateListItem} />;
 }
 
-export default App
+export default App;

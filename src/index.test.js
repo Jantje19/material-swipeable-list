@@ -1,7 +1,7 @@
-import { ExampleComponent } from '.'
+import SwipeableList from '.';
 
-describe('ExampleComponent', () => {
+describe('SwipeableList', () => {
   it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy()
+    expect(SwipeableList).toBeTruthy()
   })
 })
