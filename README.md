@@ -13,6 +13,10 @@ Swipeable Material-UI list component for React. Before installing keep the follo
 - This component will, by default, only animate up to eight elements to keep the animation performant. Other elements will just snap into place.
 - This components registers touch event listeners on the entire document. This means that, on start, the code needs to traverse the event path. By default this component stops after ten elements.
 
+## Example
+You can view an example implementation [here](https://jantje19.github.io/material-swipeable-list/).\
+Please keep in mind that only touch is supported (no mouse interactions). To test this on a desktop machine, enable the device toolbar in your browsers developer tools.
+
 ## Install
 
 ```bash
