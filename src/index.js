@@ -14,14 +14,24 @@ const generateKey = (item) => {
     return item;
   }
 
-  if (item?._id) {
+  if (item._id) {
     return item._id;
   }
 
   return item.toString();
-}
+};
 
-const SwipeableList = ({ generateListItem, items, onChange, generateKey, maxAnimationCount, maxSearchDepth, dragBoundary, className, ...props }) => {
+const SwipeableList = ({
+  generateListItem,
+  items,
+  onChange,
+  generateKey,
+  maxAnimationCount,
+  maxSearchDepth,
+  dragBoundary,
+  className,
+  ...props
+}) => {
   const classes = useStyles();
 
   let draggingCard = false;
@@ -50,7 +60,7 @@ const SwipeableList = ({ generateListItem, items, onChange, generateKey, maxAnim
     }
 
     const normalizedDragDistance = Math.abs(screenX) / targetBCR.width;
-    const opacity = 1 - normalizedDragDistance ** 2;
+    const opacity = 1 - normalizedDragDistance ** 3;
 
     target.style.transform = `translateX(${screenX}px)`;
     target.style.opacity = opacity;
@@ -88,15 +98,15 @@ const SwipeableList = ({ generateListItem, items, onChange, generateKey, maxAnim
               // TODO: Replace this once Safari gets WebAnimations.onfinish support
               elem.style.transform = `translateY(${targetBCR.height}px)`;
               requestAnimationFrame(() => {
-                elem.style.transition = 'transform .15s cubic-bezier(0, 0, 0.31, 1)';
                 elem.style.transform = 'none';
+                elem.style.transition =
+                  'transform .15s cubic-bezier(0, 0, 0.31, 1)';
               });
 
               elem.addEventListener('transitionend', onTransitionEnd);
               nextSibling(elem.nextElementSibling, index + 1);
             }
           })(target.nextElementSibling);
-
 
           target.parentNode.style.height = `${containerBCR.height}px`;
         }
@@ -122,9 +132,12 @@ const SwipeableList = ({ generateListItem, items, onChange, generateKey, maxAnim
       return;
     }
 
+    // TODO: Replace with elem.closest (if it is more performant...)
     const elemTarget = (() => {
-      for (let i = 0; i < Math.min(evt.path.length, maxSearchDepth); i++) {
-        const elem = evt.path[i];
+      const path = evt.path ?? evt.composedPath();
+
+      for (let i = 0; i < Math.min(path.length, maxSearchDepth); i++) {
+        const elem = path[i];
 
         if (elem === document) {
           break;
@@ -185,14 +198,15 @@ const SwipeableList = ({ generateListItem, items, onChange, generateKey, maxAnim
   };
 
   useEffect(() => {
-    document.addEventListener('touchstart', onStart, { passive: false });
-    document.addEventListener('touchmove', onMove, { passive: false });
-    document.addEventListener('touchend', onEnd, { passive: false });
+    // TODO: Replace with element level listeners, if possible
+    document.addEventListener('touchstart', onStart, { passive: true });
+    document.addEventListener('touchmove', onMove, { passive: true });
+    document.addEventListener('touchend', onEnd, { passive: true });
 
     return () => {
-      document.removeEventListener('touchstart', onStart, { passive: false });
-      document.removeEventListener('touchmove', onMove, { passive: false });
-      document.removeEventListener('touchend', onEnd, { passive: false });
+      document.removeEventListener('touchstart', onStart);
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('touchend', onEnd);
     };
   }, []);
 
@@ -202,7 +216,11 @@ const SwipeableList = ({ generateListItem, items, onChange, generateKey, maxAnim
         const [item, index] = args;
 
         return (
-          <div key={generateKey(item)} listitemindex={index} listitemprop={classes.listItem}>
+          <div
+            listitemindex={index}
+            key={generateKey(item)}
+            listitemprop={classes.listItem}
+          >
             {generateListItem(...args)}
           </div>
         );
