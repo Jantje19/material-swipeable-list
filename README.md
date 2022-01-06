@@ -27,27 +27,29 @@ npm install --save material-swipeable-list
 
 ```jsx
 import { ListItem, ListItemText } from '@material-ui/core';
+import React, { useState, useCallback } from 'react';
 import SwipeableList from 'material-swipeable-list';
-import React, { useState } from 'react';
 
 const Example = () => {
   const [items, setItems] = useState(['Material', 'React', 'Swipeable', 'Awesome']);
 
-  const handleChange = (index) => setItems((prevItems) => {
+  const handleChange = useCallback((index) => setItems((prevItems) => {
     const itemsCopy = prevItems.slice();
 
     itemsCopy.splice(index, 1);
 
     return itemsCopy;
-  });
+  }), []);
 
-  const generateListItem = (item) => (
-    <ListItem button>
-      <ListItemText primary={item} />
-    </ListItem>
+  return (
+    <SwipeableList items={items} onChange={handleChange}>
+      {(item) => (
+        <ListItem button>
+          <ListItemText primary={item} />
+        </ListItem>
+      )}
+    </SwipeableList>
   );
-
-  return <SwipeableList items={items} onChange={handleChange} generateListItem={generateListItem} />;
 }
 ```
 
@@ -57,15 +59,15 @@ const Example = () => {
 - **Type**: array
 - **Description**: Your list items
 
-#### `generateListItem`
-- **Required**: true
-- **Type**: function
-- **Description**: Uses the passed function to generate individual list elements. Requires the function to return a valid React component.
-
 #### `onChange`
 - **Required**: true
 - **Type**: function
 - **Description**: Callback for when an item is swiped away. **Make sure you remove the entry from the list** within this function.
+
+#### `generateListItem` / `children`
+- **Required**: false
+- **Type**: function
+- **Description**: Uses the passed function to generate individual list elements. Requires the function to return a valid React component.
 
 #### `maxAnimationCount`
 - **Required**: false
