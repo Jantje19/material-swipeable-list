@@ -19,7 +19,7 @@
 		"format": "prettier -w ./src/**/*",
 		"build": "tsc --noEmit && vite build && tsc --emitDeclarationOnly",
 		"predeploy": "cd example && pnpm install && pnpm run build",
-		"deploy": "gh-pages -d example/build"
+		"deploy": "gh-pages -d example/dist"
 	},
 	"peerDependencies": {
 		"react": "^18.2.0"
